@@ -1,0 +1,14 @@
+streamlit
+streamlit-extras
+streamlit-card
+streamlit-carousel
+streamlit-option-menu
+requests
+pandas
+numpy
+scikit-learn
+sqlalchemy
+passlib[bcrypt]
+sentence-transformers
+faiss-cpu
+surprise
