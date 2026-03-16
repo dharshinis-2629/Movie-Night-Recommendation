@@ -56,7 +56,19 @@ def home_page():
     surprise_pick = surprise_candidates[surprise_seed % len(surprise_candidates)] if surprise_candidates else None
 
     with feature_cols[0]:
-        st.markdown('<div class="home-section-title">Smart Tonight</div>', unsafe_allow_html=True)
+        smart_header_cols = st.columns([2, 3])
+        with smart_header_cols[0]:
+            st.markdown('<div class="home-section-title">Smart Tonight</div>', unsafe_allow_html=True)
+        with smart_header_cols[1]:
+            # Keep the same header height/alignment as the Surprise column (real button).
+            # We hide this via CSS but keep its layout box so the cards align.
+            st.button(
+                "Pick Something Unexpected",
+                key="smart_dummy",
+                use_container_width=True,
+                disabled=True,
+            )
+
         if smart_pick:
             movie = smart_pick["movie"]
             movie_card(
@@ -70,16 +82,17 @@ def home_page():
                 key_suffix="smart_tonight",
                 explanation=smart_pick["explanation"],
                 badge="Tonight's Best Fit",
+                variant="feature",
             )
         else:
             st.info("Rate a few more movies to unlock a stronger Smart Tonight pick.")
 
 
     with feature_cols[1]:
-        title_col, button_col = st.columns([2, 3])
-        with title_col:
+        surprise_header_cols = st.columns([2, 3])
+        with surprise_header_cols[0]:
             st.markdown('<div class="home-section-title">Surprise Me</div>', unsafe_allow_html=True)
-        with button_col:
+        with surprise_header_cols[1]:
             if st.button("Pick Something Unexpected", key="surprise_me", use_container_width=True):
                 st.session_state.home_surprise_seed = st.session_state.get("home_surprise_seed", 0) + 1
                 st.rerun()
@@ -97,6 +110,7 @@ def home_page():
                 key_suffix=f"surprise_{surprise_seed}",
                 explanation=surprise_pick["explanation"],
                 badge="Surprise Pick",
+                variant="feature",
             )
         else:
             st.info("No surprise candidate is available yet.")

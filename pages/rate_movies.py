@@ -149,7 +149,7 @@ def _render_rated_movies_view(db, user_id):
         if st.button(
             "Back to Rate Movies",
             key="back_to_rate_movies",
-            width="stretch",
+            use_container_width=True,
             type="secondary",
         ):
             st.session_state.rate_movies_view = "browse"
@@ -203,7 +203,7 @@ def rate_movies_page():
         if st.button(
             "Your Ratings",
             key="open_rated_movies",
-            width="stretch",
+            use_container_width=True,
             type="secondary",
         ):
             st.session_state.rate_movies_view = "rated"
