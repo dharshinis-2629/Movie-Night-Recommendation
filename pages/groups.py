@@ -78,7 +78,7 @@ def groups_page():
                             if st.button(
                                 "Save Group Rating",
                                 key=f"save_group_rating_{selected_group_id}_{movie['id']}",
-                                width="stretch",
+                                use_container_width=True,
                             ):
                                 existing = db.query(GroupRating).filter(
                                     GroupRating.group_id == selected_group_id,

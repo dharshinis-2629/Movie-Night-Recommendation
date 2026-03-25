@@ -3,7 +3,6 @@ from functools import lru_cache
 
 import requests
 
-TMDB_API_KEY = os.getenv("TMDB_API_KEY", "cd962dba5772bfd897383f33c1588dff")
 BASE_URL = "https://api.themoviedb.org/3"
 POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500"
 BACKDROP_BASE_URL = "https://image.tmdb.org/t/p/original"
@@ -13,8 +12,12 @@ DEFAULT_TIMEOUT = 12
 
 
 def _safe_get(path, params=None):
+    api_key = os.getenv("TMDB_API_KEY")
+    if not api_key:
+        return None
+
     merged_params = {
-        "api_key": TMDB_API_KEY,
+        "api_key": api_key,
         "language": DEFAULT_LANGUAGE,
     }
     if params:

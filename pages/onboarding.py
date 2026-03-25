@@ -107,7 +107,7 @@ def onboarding_page():
                 clicked = st.button(
                     genre,
                     key=f"genre_{genre}",
-                    width="stretch",
+                    use_container_width=True,
                     type="primary" if genre in selected_genres else "secondary",
                 )
                 if clicked:
@@ -134,9 +134,9 @@ def onboarding_page():
         top_actions = st.columns([1, 1, 4])
 
         with top_actions[0]:
-            shuffle_requested = st.button("Shuffle Movies", width="stretch")
+            shuffle_requested = st.button("Shuffle Movies", use_container_width=True)
         with top_actions[1]:
-            change_genres = st.button("Change Genres", width="stretch")
+            change_genres = st.button("Change Genres", use_container_width=True)
         if change_genres:
             _reset_genre_selection(user.user_id)
             st.session_state["onboarding_genres_draft"] = selected_genres
@@ -157,7 +157,7 @@ def onboarding_page():
         if not selected_movies:
             st.error("No movies were found for the selected genres.")
             st.info("Choose different genres and try again.")
-            if st.button("Go Back to Genres", width="stretch"):
+            if st.button("Go Back to Genres", use_container_width=True):
                 _reset_genre_selection(user.user_id)
                 st.session_state["onboarding_genres_draft"] = selected_genres
                 st.rerun()

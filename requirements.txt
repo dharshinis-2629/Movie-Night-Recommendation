@@ -3,6 +3,7 @@ streamlit-extras
 streamlit-card
 streamlit-carousel
 streamlit-option-menu
+python-dotenv
 requests
 pandas
 numpy

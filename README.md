@@ -19,6 +19,7 @@ A production-quality movie recommendation application built with Python and Stre
    ```
    pip install -r requirements.txt
    ```
+3. Create a `.env` file (copy from `.env.example`) and set `TMDB_API_KEY`.
 3. Run the application:
    ```
    streamlit run app.py

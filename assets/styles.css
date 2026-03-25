@@ -15,6 +15,12 @@ header[data-testid="stHeader"],
     display: none;
 }
 
+/* Streamlit still reserves some top space even after hiding the header; remove it. */
+section[data-testid="stMain"] {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
 [data-testid="stAppViewContainer"],
 section[data-testid="stMain"],
 [data-testid="stAppViewContainer"] > .main,
@@ -26,10 +32,15 @@ section[data-testid="stMain"],
 
 .block-container,
 [data-testid="stMainBlockContainer"] {
-    padding-top: 1.35rem !important;
-    padding-bottom: 1.25rem !important;
+    padding-top: 0 !important;
+    padding-bottom: 0.9rem !important;
     max-width: 1380px;
     margin-top: 0 !important;
+}
+
+/* Last-resort: pull the whole content up to kill the "dead strip" above the first element. */
+[data-testid="stMainBlockContainer"] {
+    transform: translateY(-28px);
 }
 
 [data-testid="stSidebar"] > div:first-child {
@@ -520,13 +531,13 @@ div[class*="st-key-rate_compact_"] button p {
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.04em;
-    margin: 0.1rem 0 0.35rem;
+    margin: 0 0 0.25rem;
 }
 
 .hero-subheading {
     color: #bfd0ea;
     font-size: 1rem;
-    margin-bottom: 1.1rem;
+    margin-bottom: 0.75rem;
 }
 
 .home-section-title,
@@ -534,12 +545,14 @@ div[class*="st-key-rate_compact_"] button p {
     color: #e2e8f0;
     font-size: 1.1rem;
     font-weight: 800;
-    margin: 0.35rem 0 0.85rem;
+    margin: 0.2rem 0 0.6rem;
     letter-spacing: -0.02em;
 }
 
 .global-search-shell {
-    margin-bottom: 1rem;
+    /* Streamlit still reserves some top slack even after header removal; pull the first row up. */
+    margin-top: -0.5rem;
+    margin-bottom: 0.35rem;
 }
 
 .global-search-shell + div [data-baseweb="select"] > div,
@@ -549,8 +562,43 @@ div[class*="st-key-rate_compact_"] button p {
     border-radius: 14px;
 }
 
+/* Home page: invisible dummy button to align Smart Tonight header with Surprise Me header. */
+div[class*="st-key-smart_dummy"] button {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
 .movie-card {
     position: relative;
+}
+
+/* Home "feature" cards: keep same geometry as regular cards; alignment is handled by layout. */
+.movie-card--feature {
+    min-height: 0;
+}
+
+/* But ensure above-the-fold visibility on smaller viewports by trimming only the poster area. */
+.movie-card--feature .movie-poster {
+    height: 14.2rem;
+}
+
+.movie-card--feature .movie-meta {
+    padding-top: 0.55rem;
+    gap: 0.35rem;
+}
+
+@media (max-height: 820px) {
+    .movie-card--feature .movie-poster {
+        height: 13.2rem;
+    }
+}
+
+.movie-card--feature .movie-explanation {
+    min-height: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .movie-card-badge {
@@ -571,4 +619,9 @@ div[class*="st-key-rate_compact_"] button p {
     font-size: 0.78rem;
     line-height: 1.45;
     min-height: 3.05rem;
+}
+
+@media (max-height: 900px) {
+    .hero-heading { font-size: 2.1rem; }
+    .hero-subheading { margin-bottom: 0.55rem; }
 }
