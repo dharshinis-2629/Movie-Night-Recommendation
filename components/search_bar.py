@@ -23,12 +23,9 @@ def search_bar():
                 label_visibility="collapsed",
             ).strip()
         with button_col:
-            submitted = st.form_submit_button(
-                "Search",
-                key="global_search_submit",
-                use_container_width=True,
-                type="secondary",
-            )
+            # `key` isn't accepted by some Streamlit versions for form_submit_button;
+            # keep the call minimal to avoid TypeError while preserving the label.
+            submitted = st.form_submit_button("Search")
 
     if not query or not submitted:
         st.markdown("</div>", unsafe_allow_html=True)
@@ -75,3 +72,4 @@ def search_bar():
             )
 
     st.markdown("</div>", unsafe_allow_html=True)
+
