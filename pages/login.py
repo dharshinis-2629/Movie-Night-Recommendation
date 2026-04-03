@@ -1,5 +1,8 @@
 import streamlit as st
-from passlib.hash import pbkdf2_sha256 as hasher
+try:
+    from passlib.hash import pbkdf2_sha256 as hasher
+except Exception:  # pragma: no cover - provide helpful message at runtime if missing
+    hasher = None
 from database.db import SessionLocal
 from database.models import User
 
@@ -20,7 +23,11 @@ def login_page():
                 user = db.query(User).filter(User.email == email).first()
                 db.close()
                 if user:
-                    if hasher.verify(password, user.password_hash):
+                    if not hasher:
+                        st.error(
+                            "Required package `passlib` is not installed. Install it with `pip install 'passlib[bcrypt]'` and restart Streamlit."
+                        )
+                    elif hasher.verify(password, user.password_hash):
                         st.session_state.user = user
                         st.success("Logged in!")
                         st.rerun()
@@ -41,6 +48,12 @@ def login_page():
                     db.close()
                     st.error("Email already exists")
                 else:
+                    if not hasher:
+                        st.error(
+                            "Required package `passlib` is not installed. Install it with `pip install 'passlib[bcrypt]'` and restart Streamlit."
+                        )
+                        db.close()
+                        return
                     hashed = hasher.hash(password)
                     new_user = User(name=name, email=email, password_hash=hashed)
                     db.add(new_user)
