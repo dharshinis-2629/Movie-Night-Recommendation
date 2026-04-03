@@ -34,19 +34,25 @@ if "theme_toggle" not in st.session_state:
 theme = "light" if st.session_state.theme_toggle else "dark"
 st.session_state.theme = theme
 
-# -------------------- ✅ FINAL API KEY FIX --------------------
+# -------------------- ✅ FINAL API KEY HANDLING --------------------
 API_KEY = os.environ.get("TMDB_API_KEY")
 
-# Debug (check logs)
-print("DEBUG TMDB_API_KEY:", API_KEY)
+# Debug logs (check in DataFlow logs)
+print("DEBUG ENV TMDB_API_KEY:", API_KEY)
 
+# 🔥 FALLBACK (guaranteed fix if DataFlow fails)
+if not API_KEY:
+    print("⚠️ Using fallback TMDB key")
+    API_KEY = "3ce27cdc94bd97e1616c9c202937e7d4"   # <-- PUT YOUR REAL KEY HERE
+
+# Final safety
 if not API_KEY:
     st.error(
-        "TMDB_API_KEY not found.\n\n"
-        "Go to DataFlow → Secrets and:\n"
-        "1. Name must be exactly: TMDB_API_KEY\n"
-        "2. Enable 'Set as ENV'\n"
-        "3. Restart the environment\n"
+        "TMDB API Key not configured.\n\n"
+        "Fix:\n"
+        "- Add TMDB_API_KEY in DataFlow Secrets\n"
+        "- Enable 'Set as ENV'\n"
+        "- Restart environment"
     )
     st.stop()
 
@@ -73,7 +79,10 @@ st.markdown(
 
 # -------------------- APP FLOW --------------------
 if 'user' not in st.session_state:
-    st.markdown('<style>[data-testid="stSidebar"] { display: none !important; }</style>', unsafe_allow_html=True)
+    st.markdown(
+        '<style>[data-testid="stSidebar"] { display: none !important; }</style>',
+        unsafe_allow_html=True
+    )
     login_page()
 
 else:
@@ -95,7 +104,10 @@ else:
         if "current_page" not in st.session_state:
             st.session_state.current_page = "Home"
 
-        st.markdown('<style>[data-testid="stSidebar"] { display: block !important; }</style>', unsafe_allow_html=True)
+        st.markdown(
+            '<style>[data-testid="stSidebar"] { display: block !important; }</style>',
+            unsafe_allow_html=True
+        )
 
         with st.sidebar:
             st.markdown("## 🎬 Movie Night")
