@@ -12,9 +12,11 @@ DEFAULT_TIMEOUT = 12
 
 
 def _safe_get(path, params=None):
-    api_key = os.getenv("TMDB_API_KEY")
+    api_key = os.environ.get("TMDB_API_KEY")
+    # Temporary debug print to confirm the key is available in the runtime
+    print("API KEY:", os.environ.get("TMDB_API_KEY"))
     if not api_key:
-        return None
+        raise ValueError("TMDB_API_KEY not found")
 
     merged_params = {
         "api_key": api_key,
