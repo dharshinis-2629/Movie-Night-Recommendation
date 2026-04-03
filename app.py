@@ -34,24 +34,19 @@ if "theme_toggle" not in st.session_state:
 theme = "light" if st.session_state.theme_toggle else "dark"
 st.session_state.theme = theme
 
-# -------------------- ✅ FIXED API KEY --------------------
-API_KEY = (
-    os.environ.get("TMDB_API_KEY") or
-    st.secrets.get("TMDB_API_KEY", None)
-)
+# -------------------- ✅ FINAL API KEY FIX --------------------
+API_KEY = os.environ.get("TMDB_API_KEY")
 
-# Debug logs (remove later)
-print("DEBUG ENV:", os.environ.get("TMDB_API_KEY"))
-print("DEBUG SECRETS:", st.secrets.get("TMDB_API_KEY", None))
+# Debug (check logs)
+print("DEBUG TMDB_API_KEY:", API_KEY)
 
 if not API_KEY:
     st.error(
         "TMDB_API_KEY not found.\n\n"
-        "Fix this:\n"
-        "1. Go to DataFlow → Secrets\n"
-        "2. Key name MUST be TMDB_API_KEY\n"
-        "3. Enable 'Set as ENV'\n"
-        "4. Restart environment\n"
+        "Go to DataFlow → Secrets and:\n"
+        "1. Name must be exactly: TMDB_API_KEY\n"
+        "2. Enable 'Set as ENV'\n"
+        "3. Restart the environment\n"
     )
     st.stop()
 
